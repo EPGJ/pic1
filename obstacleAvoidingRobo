@@ -15,7 +15,7 @@ const int RightMotorBackward = 7;
 boolean goesForward = false;
 int distance = 100;
 
-Ultrasonic ultrasonic(12, 13); //sensor function
+Ultrasonic ultrasonic(trig_pin, echo_pin); //sensor function
 Servo servo_motor; //our servo name
 
 
@@ -31,18 +31,14 @@ void setup(){
 
   servo_motor.write(100);
   delay(2000);
-  distance = ultrasonic.read();
-  distance = ultrasonic.read();
-  delay(100);
-  distance = ultrasonic.read();
-  delay(100);
-  distance = ultrasonic.read();
   delay(100);
 }
 
 void loop(){
- int distanceRight = 0;
+  int distanceRight = 0;
   int distanceLeft = 0;
+  delay(100);
+  distance = ultrasonic.read();
   delay(100);
 
   if (distance <= 15){
@@ -71,6 +67,7 @@ void loop(){
       turnLeft();
       delay(2000);
       moveStop();
+      delay(50);
     }
     else{
       Serial.print("turn right ");
@@ -78,6 +75,7 @@ void loop(){
       turnRight();
       delay(2000);
       moveStop();
+      delay(50);
     }
   }
   else{
@@ -85,7 +83,6 @@ void loop(){
     Serial.println(distance);
     moveForward();
   }
-   distance = ultrasonic.read();
    Serial.print("front ");
    Serial.println(distance);
 }
@@ -114,7 +111,7 @@ int lookLeft(){
 
 
 void moveStop(){
-  
+  Serial.println("STOP");
   digitalWrite(RightMotorForward, LOW);
   digitalWrite(LeftMotorForward, LOW);
   digitalWrite(RightMotorBackward, LOW);
@@ -123,21 +120,21 @@ void moveStop(){
 
 void moveForward(){
 
-  if(!goesForward){
+  // if(!goesForward){
 
-    goesForward=true;
+  //   goesForward=true;
     
     digitalWrite(LeftMotorBackward, HIGH);
     digitalWrite(RightMotorForward, HIGH);
     
     digitalWrite(LeftMotorForward, LOW);
     digitalWrite(RightMotorBackward, LOW);
-  }
+  // }
 }
 
 void moveBackward(){
 
-  goesForward=false;
+  // goesForward=false;
 
   digitalWrite(LeftMotorForward, HIGH);
   digitalWrite(RightMotorBackward, HIGH);
